@@ -1,0 +1,173 @@
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface RedirectRule {
+  source: string;
+  has: { status: number; location: string }[];
+}
+
+interface HeaderSecurityPolicy {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CachingStrategy {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  vercel?: { [key: string]: any };
+  netlify?: { [key: string]: any };
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  redirects: RedirectRule[];
+  headers: HeaderSecurityPolicy[];
+  cache: CachingStrategy[];
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  redirects: [
+    {
+      source: "/old-url",
+      has: [{ status: 301, location: "/new-url" }]
+    }
+  ],
+  headers: [
+    {
+      source: "/*",
+      headers: [
+        { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        { key: "X-Frame-Options", value: "DENY" }
+      ]
+    }
+  ],
+  cache: [
+    {
+      source: "/api/*",
+      headers: [
+        { key: "Cache-Control", value: "s-maxage=1, stale-while-revalidate=59" }
+      ]
+    },
+    {
+      source: "/_next/static/*",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "yarn run build",
+      buildOutput: ".next"
+    },
+    netlify: {
+      publish: ".next"
+    }
+  }
+};
+
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface RedirectRule {
+  source: string;
+  has: { status: number; location: string }[];
+}
+
+interface HeaderSecurityPolicy {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CachingStrategy {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  vercel?: { [key: string]: any };
+  netlify?: { [key: string]: any };
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  redirects: RedirectRule[];
+  headers: HeaderSecurityPolicy[];
+  cache: CachingStrategy[];
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  redirects: [
+    {
+      source: "/old-url",
+      has: [{ status: 301, location: "/new-url" }]
+    }
+  ],
+  headers: [
+    {
+      source: "/*",
+      headers: [
+        { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        { key: "X-Frame-Options", value: "DENY" }
+      ]
+    }
+  ],
+  cache: [
+    {
+      source: "/api/*",
+      headers: [
+        { key: "Cache-Control", value: "s-maxage=1, stale-while-revalidate=59" }
+      ]
+    },
+    {
+      source: "/_next/static/*",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "yarn run build",
+      buildOutput: ".next"
+    },
+    netlify: {
+      publish: ".next"
+    }
+  }
+};
